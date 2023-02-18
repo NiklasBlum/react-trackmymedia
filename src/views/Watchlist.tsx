@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import { useMediaStore } from '../store';
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import MediaFilter from '../components/MediaFilter';
 import MediaCardGrid from '../components/MediaCardGrid';
 import { getWatchlistItems } from '../services/FirebaseService';
@@ -12,26 +12,29 @@ export default function Watchlist() {
     const { mediaType } = useMediaStore();
     const [mediaItems, setMediaItems] = useState<MediaItem[] | []>(null);
 
-    async function searchWatchlist() {
-        // setMediaItems(null);
+
+    async function getWatchlistMediaItems(): Promise<MediaItem[]> {
+        const mediaItems = [] as MediaItem[];
         const dbMediaItems = await getWatchlistItems(mediaType);
 
-        const all = [] as MediaItem[];
-        dbMediaItems.forEach(async (x) => {
-            all.push(await getMediaById(x.tmdbId, mediaType));
+        for await (const mediaItem of dbMediaItems) {
+            mediaItems.push(await getMediaById(mediaItem.tmdbId, mediaType));
+        }
 
-        });
-        console.log(all);
-        setMediaItems(all);
+        return mediaItems;
     }
 
-    // useEffect(() => {
-    //     searchWatchlist();
-    // }, [mediaType])
+    async function searchWatchlist() {
+        const items = await getWatchlistMediaItems();
+        setMediaItems(items);
+    }
+
+    useEffect(() => {
+        searchWatchlist();
+    }, [mediaType])
 
     return (
         <Fragment>
-            <Button onClick={searchWatchlist}></Button>
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} >
                     <NavigationBar />
