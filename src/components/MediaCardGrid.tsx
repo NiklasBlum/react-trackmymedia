@@ -1,7 +1,8 @@
 import Grid from "@mui/material/Grid";
+import MediaItem from "../types/MediaItem";
 import MediaCard from "./MediaCard";
 
-export default function MediaCardGrid({ mediaItems }) {
+export default function MediaCardGrid({ mediaItems }: { mediaItems: MediaItem[] }) {
     return (
         <Grid p={1} container spacing={2} justifyContent="center">
             {mediaItems.map(movie =>

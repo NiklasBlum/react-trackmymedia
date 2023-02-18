@@ -9,7 +9,6 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
 
     return (
         <Card>
-            {mediaItem.id}
             <CardMedia
                 component="img"
                 image={mediaItem.posterUrl} />

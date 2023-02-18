@@ -58,10 +58,27 @@ async function updateMedia() {
     })
 }
 
+async function getWatchlistItems(mediaType: MediaType): Promise<DbMediaItem[]> {
+
+    const q = query(collection(db, "media"),
+        where("mediaType", "==", mediaType),
+        where("onWatchlist", "==", true));
+
+    const querySnapshot = await getDocs(q);
+    const dbMediaItems = [] as DbMediaItem[];
+
+    querySnapshot.forEach((doc) => {
+        dbMediaItems.push(
+            {
+                tmdbId: doc.data().tmdbId
+            } as DbMediaItem)
+    });
+
+    return dbMediaItems;
+}
+
 async function getDbMediaItemById(id: number, mediaType: MediaType) {
     const { user }: { user: any } = useMediaStore.getState();
-
-    console.log(id, user.uid, mediaType);
 
     const q = query(collection(db, "media"),
         where("tmdbId", "==", id),
@@ -96,5 +113,5 @@ async function getDbMediaItemById(id: number, mediaType: MediaType) {
 
 
 
-export { getDbMediaItemById, setWatchlistState, updateMedia }
+export { getDbMediaItemById, setWatchlistState, updateMedia, getWatchlistItems }
 

@@ -14,7 +14,7 @@ async function getMediaBySearch(searchText: string, mediaType: MediaType, page =
 
     try {
         if (response.data) {
-            return await createMediaItems(response.data.results, mediaType);
+            return await getDbMediaItems(response.data.results, mediaType);
         }
     } catch (error) {
         console.log(error);
@@ -29,36 +29,57 @@ async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] |
 
     try {
         if (response.data) {
-            return await createMediaItems(response.data.results, mediaType);
+            return await getDbMediaItems(response.data.results, mediaType);
         }
     } catch (error) {
         console.log(error);
     }
 }
 
-async function createMediaItems(tmdbMediaResults: any[], mediaType: MediaType): Promise<MediaItem[]> {
+async function getMediaById(id: number, mediaType: MediaType): Promise<MediaItem> {
+    let query = `${baseUrl}${mediaType}/${id}?api_key=${apiKey}&language=${language}`;
+
+    let response = await axios.get(query);
+
+    try {
+        if (response.data) {
+            return await createDbMediaItem(response.data, mediaType);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getDbMediaItems(tmdbMediaResults: any[], mediaType: MediaType): Promise<MediaItem[]> {
     var mediaItems: MediaItem[] = [];
 
     for await (const x of tmdbMediaResults) {
         if (x.poster_path) {
-            const dbMediaItem = await getDbMediaItemById(x.id, mediaType);
-            mediaItems.push({
-                id: x.id,
-                title: mediaType === MediaType.Movie ? x.title : x.name,
-                posterUrl: basePosterUrl + x.poster_path,
-                voteAverage: x.vote_average,
-                voteCount: x.vote_count,
-                releaseDate: mediaType === MediaType.Movie ? new Date(x.release_date) : new Date(x.first_air_date),
-                isOnWatchlist: dbMediaItem.onWatchlist,
-                watchedAt: dbMediaItem.watchedAt
-            } as MediaItem);
+            mediaItems.push(await createDbMediaItem(x, mediaType));
         }
     }
-
-    console.log(mediaItems);
 
     return mediaItems;
 }
 
+async function createDbMediaItem(tmdbMediaItem: any, mediaType: MediaType): Promise<MediaItem | null> {
 
-export { getMediaBySearch, getPopular }
+    if (tmdbMediaItem.poster_path) {
+        const dbMediaItem = await getDbMediaItemById(tmdbMediaItem.id, mediaType);
+        return {
+            id: tmdbMediaItem.id,
+            title: mediaType === MediaType.Movie ? tmdbMediaItem.title : tmdbMediaItem.name,
+            posterUrl: basePosterUrl + tmdbMediaItem.poster_path,
+            voteAverage: tmdbMediaItem.vote_average,
+            voteCount: tmdbMediaItem.vote_count,
+            releaseDate: mediaType === MediaType.Movie ? new Date(tmdbMediaItem.release_date) : new Date(tmdbMediaItem.first_air_date),
+            isOnWatchlist: dbMediaItem.onWatchlist,
+            watchedAt: dbMediaItem.watchedAt
+        } as MediaItem;
+    }
+
+    return null;
+}
+
+
+export { getMediaBySearch, getPopular, getMediaById }
