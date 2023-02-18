@@ -36,6 +36,7 @@ export default function App() {
             <Route path="/auth" element={<Auth />} />
             <Route path="/popular" element={<Popular />} />
             <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="*" element={<Home />} />
         </Routes>
     )
 }

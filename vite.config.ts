@@ -6,6 +6,19 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA({ registerType: 'autoUpdate' })
+    VitePWA({
+      registerType: "autoUpdate",
+      manifest: {
+        icons: [
+          {
+            src: "series.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable"
+          }
+        ]
+      }
+    },
+    )
   ],
 })

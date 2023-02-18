@@ -38,24 +38,6 @@ export default function ButtonAppBar() {
     }
 
     return (
-        // <AppBar position="static">
-        //     <Toolbar>
-        //         <IconButton
-        //             size="large"
-        //             edge="start"
-        //             color="inherit"
-        //             aria-label="menu"
-        //             sx={{ mr: 2 }}>
-        //             <MenuIcon />
-        //         </IconButton>
-        //         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        //             Media App
-        //         </Typography>
-        //         <Link to="/popular">Popular</Link>
-        //         <Button onClick={logout} color="inherit">Logout</Button>
-        //         <Avatar src={user?.photoURL} />
-        //     </Toolbar>
-        // </AppBar>
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
@@ -108,7 +90,7 @@ export default function ButtonAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu} >
+                                <MenuItem key={page} onClick={() => navigate('/' + page)}  >
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -137,7 +119,7 @@ export default function ButtonAppBar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={() => navigate(page)}
+                                onClick={() => navigate('/' + page)}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 {page}
