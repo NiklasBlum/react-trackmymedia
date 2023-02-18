@@ -1,5 +1,5 @@
-import { RemoveRedEye, CalendarMonth } from "@mui/icons-material"
-import { Badge, Button, ButtonGroup, IconButton, Paper, Popper } from "@mui/material"
+import { RemoveRedEye, CalendarMonth, Delete } from "@mui/icons-material"
+import { Badge, Button, ButtonGroup, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Popper } from "@mui/material"
 import { Fragment, useState } from "react";
 import DateTimePicker from "./shared/DateTimePicker";
 export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isLoading }) {
@@ -12,6 +12,11 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
         setAnchorEl(anchorEl ? null : event.currentTarget);
         setShowPopper(!showPopper);
     };
+
+    function addSpecificDate() {
+        onAdd(customWatchDate);
+        setCustomWatchDate(null);
+    }
 
     return (
         <Fragment>
@@ -28,7 +33,7 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
                     }
                 </Button>
 
-                <IconButton onClick={handleShowPopper} >
+                <IconButton onClick={handleShowPopper} color="info">
                     <Badge badgeContent={watchDates.length} color="success">
                         <CalendarMonth />
                     </Badge>
@@ -39,18 +44,28 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
                 anchorEl={anchorEl}
                 placement="bottom-start">
                 <Paper>
-                    {
-                        watchDates.map((x: Date) => (
-                            <div key={x.toString()}>
-                                <Button onClick={() => onRemove(x)}>{x.toDateString()}</Button>
-                            </div>
-                        ))
-                    }
+                    <List dense>
+                        {
+                            watchDates.map((x: Date) => (
+                                <div key={x.toString()}>
+                                    <ListItem
+                                        secondaryAction={
+                                            <IconButton edge="end" onClick={() => onRemove(x)}>
+                                                <Delete />
+                                            </IconButton>
+                                        }                                    >
+                                        <ListItemText
+                                            primary={x.toLocaleDateString()} />
+                                    </ListItem>
+                                </div>
+                            ))
+                        }
+                    </List>
 
-                    <DateTimePicker dateChanged={(x: Date) => setCustomWatchDate(x)} />
+                    <DateTimePicker date={customWatchDate} dateChanged={(x: Date) => setCustomWatchDate(x)} />
 
-                    <Button disabled={customWatchDate == null}
-                        onClick={() => onAdd(customWatchDate)}>Add specific date</Button>
+                    <Button size="small" disabled={customWatchDate == null}
+                        onClick={addSpecificDate}>Add specific date</Button>
                 </Paper>
             </Popper>
         </Fragment>

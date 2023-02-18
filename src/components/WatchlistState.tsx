@@ -1,10 +1,11 @@
-import { IconButton } from "@mui/material";
-import { MoreTime, AlarmOn } from '@mui/icons-material';
+import { Button, IconButton } from "@mui/material";
+import { MoreTime, AlarmOn, MoreTimeOutlined } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from "react";
 import { setWatchlistState } from "../services/FirebaseService";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
 import MediaType from "../types/MediaType";
+
 
 export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }): JSX.Element {
 
@@ -12,6 +13,7 @@ export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }):
     const { mediaType }: { mediaType: MediaType } = useMediaStore();
 
     async function setWatchlistToState(state: boolean) {
+        console.log(state);
         await setWatchlistState(mediaItem, mediaType, state)
         setIsWatchlist(state);
     }
@@ -23,16 +25,17 @@ export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }):
         <Fragment>
             {isWatchlist
                 ?
-                <IconButton
-                    size="large"
-                    color="error"
+                <Button variant="contained"
+                    startIcon={<MoreTime />}
+                    color="success"
                     onClick={() => setWatchlistToState(false)}>
-                    <AlarmOn fontSize="inherit" />
-                </IconButton>
+                </Button>
                 :
-                <IconButton size="large" color="success" onClick={() => setWatchlistToState(true)}>
-                    <MoreTime fontSize="inherit" />
-                </IconButton>
+                <Button variant="outlined"
+                    startIcon={<MoreTime />}
+                    color="success"
+                    onClick={() => setWatchlistToState(true)}>
+                </Button>
             }
         </Fragment>
     )

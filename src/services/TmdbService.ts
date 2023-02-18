@@ -18,7 +18,7 @@ async function getMediaBySearch(searchText: string, mediaType: MediaType, page =
         }
     } catch (error) {
         console.log(error);
-    }   
+    }
 }
 
 async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] | undefined> {
@@ -33,7 +33,7 @@ async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] |
         }
     } catch (error) {
         console.log(error);
-    }   
+    }
 }
 
 async function createMediaItems(tmdbMediaResults: any[], mediaType: MediaType): Promise<MediaItem[]> {
@@ -48,9 +48,8 @@ async function createMediaItems(tmdbMediaResults: any[], mediaType: MediaType): 
                 posterUrl: basePosterUrl + x.poster_path,
                 voteAverage: x.vote_average,
                 voteCount: x.vote_count,
-                releaseDate: mediaType === MediaType.Movie ? x.release_date : x.first_air_date,
+                releaseDate: mediaType === MediaType.Movie ? new Date(x.release_date) : new Date(x.first_air_date),
                 isOnWatchlist: dbMediaItem.onWatchlist,
-                watched: dbMediaItem.watched,
                 watchedAt: dbMediaItem.watchedAt
             } as MediaItem);
         }
@@ -62,4 +61,4 @@ async function createMediaItems(tmdbMediaResults: any[], mediaType: MediaType): 
 }
 
 
-export {getMediaBySearch, getPopular}
+export { getMediaBySearch, getPopular }

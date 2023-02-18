@@ -5,8 +5,7 @@ export default interface MediaItem {
     title: string,
     voteCount: number,
     voteAverage: number,
-    releaseDate: string,
-    isOnWatchlist: boolean,
-    watched: boolean,
+    releaseDate: Date,
+    isOnWatchlist: boolean,    
     watchedAt?: Date[]
 }

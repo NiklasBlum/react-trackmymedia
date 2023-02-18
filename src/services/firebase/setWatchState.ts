@@ -24,7 +24,6 @@ async function setWatchState(mediaItem: MediaItem, mediaType: MediaType, watchDa
                 mediaType: mediaType,
                 title: mediaItem.title,
                 onWatchlist: false,
-                watched: watchDates?.length > 0 ? true : false,
                 watchedAt: watchDates
             } as DbMediaItem);
         }

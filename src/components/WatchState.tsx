@@ -12,12 +12,19 @@ export default function WatchState({ mediaItem }: { mediaItem: MediaItem }): JSX
     const { mediaType }: { mediaType: MediaType } = useMediaStore();
 
     async function addWatchDate(date: Date) {
+        if (isDateAlreadyAdded(date))
+            return;
+
         setLoading(true);
         const allWatchDates = [...watchDates, date];
 
         await setStateInDb(mediaItem, mediaType, allWatchDates);
         setWatchDates(allWatchDates);
         setLoading(false);
+    }
+
+    function isDateAlreadyAdded(date: Date): boolean {
+        return watchDates.some(x => x.getDate() == date.getDate());
     }
 
     async function removeWatchDate(date: Date) {

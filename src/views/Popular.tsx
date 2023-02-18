@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from 'react';
-import MediaSearchBar from '../components/MediaSearchBar';
 import NavigationBar from '../components/NavigationBar';
 import { getPopular } from "../services/TmdbService";
 import { useMediaStore } from '../store';
@@ -28,11 +27,6 @@ export default function Popular() {
                 </Grid>
                 <Grid item xs={12} textAlign="center">
                     <MediaFilter />
-                </Grid>
-                <Grid spacing={2} py={2} container justifyContent="center" alignItems="center" >
-                    <Grid item textAlign="center">
-                        <Button variant='contained' size='large' onClick={() => searchPopular()}>Search</Button>
-                    </Grid>
                 </Grid>
                 {
                     mediaItems != null &&

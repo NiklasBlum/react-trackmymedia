@@ -5,8 +5,7 @@ export default interface DbMediaItem {
     userId?: string,
     mediaType?: MediaType
     tmdbId?: number,
-    onWatchlist: boolean,
-    watched: boolean,
+    onWatchlist: boolean,   
     watchedAt?: Date[],
     title?: string
 }

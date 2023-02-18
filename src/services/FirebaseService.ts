@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc, deleteField } from "firebase/firestore";
 import { db } from "../firebase/config"
 import { useMediaStore } from "../store";
 import MediaType from "../types/MediaType";
@@ -26,7 +26,6 @@ async function setWatchlistState(mediaItem: MediaItem, mediaType: MediaType, onW
                 title: mediaItem.title,
                 onWatchlist: onWatchlist,
                 watched: false,
-                watchedAt: null
             } as DbMediaItem);
         }
         else {
@@ -45,7 +44,6 @@ async function setWatchlistState(mediaItem: MediaItem, mediaType: MediaType, onW
 async function updateMedia() {
 
     const q = query(collection(db, "media"),
-        where("watched", "==", false),
         where("mediaType", "==", "movie"));
 
     const querySnapshot = await getDocs(q);
@@ -54,8 +52,9 @@ async function updateMedia() {
         const docRef = doc(db, 'media', x.id);
         console.log(x.data());
 
-        await deleteDoc(docRef);
-
+        await updateDoc(docRef, {
+            watched: deleteField()
+        });
     })
 }
 
