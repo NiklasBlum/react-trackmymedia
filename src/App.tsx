@@ -16,10 +16,8 @@ export default function App() {
     const { user: storeUser, setUser } = useMediaStore();
 
     useEffect(() => {
-        if (loading) {
-            console.log("loading");
+        if (loading)
             return;
-        }
         if (user) {
             setUser(user);
             console.log(storeUser);

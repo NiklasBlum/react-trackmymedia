@@ -39,12 +39,12 @@ export default function MediaCard({ mediaItem }) {
                 <Typography>
 
                 </Typography>
-                <Typography>
-                    <WatchState
-                        mediaItem={mediaItem} />
-                    <WatchlistState
-                        mediaItem={mediaItem} />
-                </Typography>
+
+                <WatchState
+                    mediaItem={mediaItem} />
+                <WatchlistState
+                    mediaItem={mediaItem} />
+
             </CardContent>
         </Card>
     );

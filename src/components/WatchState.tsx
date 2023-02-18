@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { setWatchState as setStateInDb } from "../services/firebase/setWatchState";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
@@ -33,11 +33,9 @@ export default function WatchState({ mediaItem }: { mediaItem: MediaItem }): JSX
     }, [])
 
     return (
-        <Fragment>
-            <WatchStateSplitButton watchDates={watchDates}
-                isLoading={isLoading}
-                onAdd={(x: Date) => addWatchDate(x)}
-                onRemove={(x: Date) => removeWatchDate(x)} />
-        </Fragment >
+        <WatchStateSplitButton watchDates={watchDates}
+            isLoading={isLoading}
+            onAdd={(x: Date) => addWatchDate(x)}
+            onRemove={(x: Date) => removeWatchDate(x)} />
     )
 }
