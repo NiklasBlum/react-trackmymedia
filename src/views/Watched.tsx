@@ -1,15 +1,14 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useMediaStore } from '../store';
 import { Grid } from '@mui/material';
-import MediaFilter from '../components/MediaFilter';
 import MediaCardGrid from '../components/MediaCardGrid';
 import { getWatchedMediaItems } from '../services/firebase/useState';
 import { getMediaById } from '../services/tmdb/useTmdb';
 import MediaItem from '../types/MediaItem';
 
 export default function Watched() {
-    const { mediaType } = useMediaStore();
-    const [mediaItems, setMediaItems] = useState<MediaItem[] | []>(null);
+    const { mediaType, setLoading } = useMediaStore();
+    const [mediaItems, setMediaItems] = useState<MediaItem[] | null>(null);
 
     async function getWatched(): Promise<MediaItem[]> {
         const mediaItems = [] as MediaItem[];
@@ -24,8 +23,11 @@ export default function Watched() {
     }
 
     async function triggerWatched() {
+        setLoading(true);
+        setMediaItems(null);
         const items = await getWatched();
         setMediaItems(items);
+        setLoading(false);
     }
 
     useEffect(() => {

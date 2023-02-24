@@ -3,16 +3,17 @@ import MediaSearchBar from '../components/MediaSearchBar';
 import { getMediaBySearch } from "../services/tmdb/useTmdb";
 import { useMediaStore } from '../store';
 import { Button, Grid } from '@mui/material';
-import MediaFilter from '../components/MediaFilter';
 import MediaCardGrid from '../components/MediaCardGrid';
 
 export default function Home() {
-    const { mediaType, searchText } = useMediaStore();
+    const { mediaType, searchText, setLoading, isLoading } = useMediaStore();
     const [mediaItems, setMediaItems] = useState(null);
 
     async function ExecuteSearch() {
+        setLoading(true);
         setMediaItems(null);
         setMediaItems(await getMediaBySearch(searchText, mediaType, 1));
+        setLoading(false);
     }
 
     return (
@@ -23,7 +24,12 @@ export default function Home() {
                         <MediaSearchBar />
                     </Grid>
                     <Grid item textAlign="center">
-                        <Button variant='contained' size='large' onClick={() => ExecuteSearch()}>Search</Button>
+                        <Button variant='contained'
+                            disabled={isLoading}
+                            size='large'
+                            onClick={() => ExecuteSearch()}>
+                            Search
+                        </Button>
                     </Grid>
                 </Grid>
                 {

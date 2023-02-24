@@ -1,14 +1,13 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useMediaStore } from '../store';
 import { Grid } from '@mui/material';
-import MediaFilter from '../components/MediaFilter';
 import MediaCardGrid from '../components/MediaCardGrid';
 import { getWatchlistItems } from '../services/firebase/useState';
 import { getMediaById } from '../services/tmdb/useTmdb';
 import MediaItem from '../types/MediaItem';
 
 export default function Watchlist() {
-    const { mediaType } = useMediaStore();
+    const { mediaType, isLoading, setLoading } = useMediaStore();
     const [mediaItems, setMediaItems] = useState<MediaItem[] | []>(null);
 
     async function getWatchlistMediaItems(): Promise<MediaItem[]> {
@@ -23,8 +22,10 @@ export default function Watchlist() {
     }
 
     async function searchWatchlist() {
+        setLoading(true);
         const items = await getWatchlistMediaItems();
         setMediaItems(items);
+        setLoading(false);
     }
 
     useEffect(() => {

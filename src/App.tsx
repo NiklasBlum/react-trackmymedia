@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useMediaStore } from "./store";
 import Popular from "./views/Popular";
 import Watchlist from "./views/Watchlist";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import NavigationBar from "./components/NavigationBar";
 import Watched from "./views/Watched";
 import MediaFilter from "./components/MediaFilter";
@@ -34,6 +34,8 @@ export default function App() {
     }, [user, loading]);
 
     return (
+
+        //Refactor this and use protected routes
         <>
             {user &&
                 <Grid container spacing={2} justifyContent="center">
@@ -45,6 +47,15 @@ export default function App() {
                     </Grid>
                 </Grid>
             }
+
+            {isLoading && <CircularProgress sx={{
+                top: "50 %",
+                left: "50%",
+                width: "30em",
+                height: "18em",
+                transform: "translate(-50%, -50%)",
+                position: "fixed"
+            }} />}
 
             <Routes>
                 <Route path="/" element={<Home />} />

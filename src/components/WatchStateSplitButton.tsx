@@ -1,12 +1,14 @@
 import { RemoveRedEye, CalendarMonth, Delete } from "@mui/icons-material"
-import { Badge, Button, ButtonGroup, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Popper } from "@mui/material"
+import { Badge, Button, ButtonGroup, IconButton, List, ListItem, ListItemText, Paper, Popper } from "@mui/material"
 import { Fragment, useState } from "react";
 import DateTimePicker from "./shared/DateTimePicker";
+
 export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isLoading }) {
 
     const [showPopper, setShowPopper] = useState<boolean>(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [customWatchDate, setCustomWatchDate] = useState<Date | null>(null);
+    const watchedAtleastOnce = watchDates?.length > 0;
 
     const handleShowPopper = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -24,10 +26,10 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
         <Fragment>
             <ButtonGroup variant="contained" size="small" disabled={isLoading}>
                 <Button startIcon={<RemoveRedEye />}
-                    size="small"
+                    color={watchedAtleastOnce ? "success" : "info"}
                     onClick={() => onAdd(new Date())}>
                     {
-                        watchDates?.length > 0
+                        watchedAtleastOnce
                             ?
                             watchDates[0].toLocaleDateString()
                             :
