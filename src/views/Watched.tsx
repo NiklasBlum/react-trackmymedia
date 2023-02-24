@@ -3,18 +3,19 @@ import { useMediaStore } from '../store';
 import { Grid } from '@mui/material';
 import MediaFilter from '../components/MediaFilter';
 import MediaCardGrid from '../components/MediaCardGrid';
-import { getWatchlistItems } from '../services/firebase/useState';
+import { getWatchedMediaItems } from '../services/firebase/useState';
 import { getMediaById } from '../services/tmdb/useTmdb';
 import MediaItem from '../types/MediaItem';
 
-export default function Watchlist() {
+export default function Watched() {
     const { mediaType } = useMediaStore();
     const [mediaItems, setMediaItems] = useState<MediaItem[] | []>(null);
 
-    async function getWatchlistMediaItems(): Promise<MediaItem[]> {
+    async function getWatched(): Promise<MediaItem[]> {
         const mediaItems = [] as MediaItem[];
-        const dbMediaItems = await getWatchlistItems(mediaType);
+        const dbMediaItems = await getWatchedMediaItems(mediaType);
 
+        console.log(dbMediaItems);
         for await (const mediaItem of dbMediaItems) {
             mediaItems.push(await getMediaById(mediaItem.tmdbId, mediaType));
         }
@@ -22,13 +23,13 @@ export default function Watchlist() {
         return mediaItems;
     }
 
-    async function searchWatchlist() {
-        const items = await getWatchlistMediaItems();
+    async function triggerWatched() {
+        const items = await getWatched();
         setMediaItems(items);
     }
 
     useEffect(() => {
-        searchWatchlist();
+        triggerWatched();
     }, [mediaType])
 
     return (

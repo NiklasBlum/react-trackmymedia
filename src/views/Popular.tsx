@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import NavigationBar from '../components/NavigationBar';
-import { getPopular } from "../services/TmdbService";
+import { getPopular } from "../services/tmdb/useTmdb";
 import { useMediaStore } from '../store';
 import { Grid } from '@mui/material';
 import MediaFilter from '../components/MediaFilter';
@@ -27,12 +26,6 @@ export default function Popular() {
     return (
         <Fragment>
             <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} >
-                    <NavigationBar />
-                </Grid>
-                <Grid item xs={12} textAlign="center">
-                    <MediaFilter />
-                </Grid>
                 {
                     isLoading &&
                     <ProgressIndicator />

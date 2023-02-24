@@ -11,7 +11,7 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Popular', 'Watchlist'];
+const pages = ['Popular', 'Watchlist', 'Watched'];
 
 export default function ButtonAppBar() {
 

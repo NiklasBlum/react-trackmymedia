@@ -1,7 +1,6 @@
 import { Fragment, useState } from 'react';
 import MediaSearchBar from '../components/MediaSearchBar';
-import NavigationBar from '../components/NavigationBar';
-import { getMediaBySearch } from "../services/TmdbService";
+import { getMediaBySearch } from "../services/tmdb/useTmdb";
 import { useMediaStore } from '../store';
 import { Button, Grid } from '@mui/material';
 import MediaFilter from '../components/MediaFilter';
@@ -19,12 +18,6 @@ export default function Home() {
     return (
         <Fragment>
             <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} >
-                    <NavigationBar />
-                </Grid>
-                <Grid item xs={12} textAlign="center">
-                    <MediaFilter />
-                </Grid>
                 <Grid spacing={2} py={2} container justifyContent="center" alignItems="center" >
                     <Grid item xs={10}  >
                         <MediaSearchBar />
@@ -39,7 +32,6 @@ export default function Home() {
                         <MediaCardGrid mediaItems={mediaItems} />
                     </Grid>
                 }
-
                 {mediaItems?.length == 0 && "No results"}
             </Grid>
         </Fragment >

@@ -35,7 +35,7 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
                     }
                 </Button>
 
-                <IconButton onClick={handleShowPopper} color="info">
+                <IconButton onClick={handleShowPopper} color="info" size="small">
                     <Badge badgeContent={watchDates.length} color="success">
                         <CalendarMonth />
                     </Badge>

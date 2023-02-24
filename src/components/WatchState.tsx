@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { setWatchState as setStateInDb } from "../services/firebase/setWatchState";
+import { setWatchState as setStateInDb } from "../services/firebase/useState";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
 import MediaType from "../types/MediaType";

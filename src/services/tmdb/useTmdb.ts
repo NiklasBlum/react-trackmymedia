@@ -1,14 +1,14 @@
 import axios from "axios";
-import MediaItem from "../types/MediaItem";
-import MediaType from "../types/MediaType";
-import { useMediaStore } from "../store";
-import { getDbMediaItemById } from "./FirebaseService";
+import { useMediaStore } from "../../store";
+import MediaItem from "../../types/MediaItem";
+import MediaType from "../../types/MediaType";
+import { getDbMediaItemById } from "../firebase/useMedia";
 
 const { language, baseUrl, apiKey, basePosterUrl } = useMediaStore.getState();
 
 async function getMediaBySearch(searchText: string, mediaType: MediaType, page = 1): Promise<MediaItem[] | undefined> {
 
-    let searchQuery = `${baseUrl}search/${mediaType}?api_key=${apiKey}&language=${language}&page=${page}&query=${searchText}`;
+    let searchQuery = `${baseUrl}search/${mediaType}?api_key=${apiKey}&language=${language}&page=${page}&query=${searchText}&region=DE`;
 
     let response = await axios.get(searchQuery);
 
@@ -23,7 +23,7 @@ async function getMediaBySearch(searchText: string, mediaType: MediaType, page =
 
 async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] | undefined> {
 
-    let searchQuery = `${baseUrl}${mediaType}/popular?api_key=${apiKey}&language=${language}&page=${page}&original_language=en`;
+    let searchQuery = `${baseUrl}${mediaType}/popular?api_key=${apiKey}&language=${language}&page=${page}&region=DE`;
 
     console.log(searchQuery);
     let response = await axios.get(searchQuery);
@@ -56,6 +56,7 @@ async function getDbMediaItems(tmdbMediaResults: any[], mediaType: MediaType): P
 
     for await (const x of tmdbMediaResults) {
         if (x.poster_path) {
+
             mediaItems.push(await createDbMediaItem(x, mediaType));
         }
     }
@@ -65,21 +66,18 @@ async function getDbMediaItems(tmdbMediaResults: any[], mediaType: MediaType): P
 
 async function createDbMediaItem(tmdbMediaItem: any, mediaType: MediaType): Promise<MediaItem | null> {
 
-    if (tmdbMediaItem.poster_path && tmdbMediaItem.original_language === "en") {
-        const dbMediaItem = await getDbMediaItemById(tmdbMediaItem.id, mediaType);
-        return {
-            id: tmdbMediaItem.id,
-            title: mediaType === MediaType.Movie ? tmdbMediaItem.title : tmdbMediaItem.name,
-            posterUrl: basePosterUrl + tmdbMediaItem.poster_path,
-            voteAverage: tmdbMediaItem.vote_average,
-            voteCount: tmdbMediaItem.vote_count,
-            releaseDate: mediaType === MediaType.Movie ? new Date(tmdbMediaItem.release_date) : new Date(tmdbMediaItem.first_air_date),
-            isOnWatchlist: dbMediaItem.onWatchlist,
-            watchedAt: dbMediaItem.watchedAt
-        } as MediaItem;
-    }
+    const dbMediaItem = await getDbMediaItemById(tmdbMediaItem.id, mediaType);
 
-    return null;
+    return {
+        id: tmdbMediaItem.id,
+        title: mediaType === MediaType.Movie ? tmdbMediaItem.title : tmdbMediaItem.name,
+        posterUrl: basePosterUrl + tmdbMediaItem.poster_path,
+        voteAverage: tmdbMediaItem.vote_average,
+        voteCount: tmdbMediaItem.vote_count,
+        releaseDate: mediaType === MediaType.Movie ? new Date(tmdbMediaItem.release_date) : new Date(tmdbMediaItem.first_air_date),
+        isOnWatchlist: dbMediaItem.onWatchlist,
+        watchedAt: dbMediaItem.watchedAt
+    } as MediaItem;
 }
 
 

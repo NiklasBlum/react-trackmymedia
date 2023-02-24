@@ -2,7 +2,7 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import MediaType from '../types/MediaType';
 import { useMediaStore } from '../store';
 
-export default function ColorToggleButton() {
+export default function MediaFilter({ isDisabled = false }) {
 
     const { mediaType, setMediaType } = useMediaStore();
 
@@ -18,6 +18,7 @@ export default function ColorToggleButton() {
             size='large'
             value={mediaType}
             exclusive
+            disabled={isDisabled}
             onChange={handleChange}
         >
             <ToggleButton value={MediaType.Movie} >Movie</ToggleButton>

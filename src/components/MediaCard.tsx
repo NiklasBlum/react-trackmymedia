@@ -1,24 +1,41 @@
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import WatchlistState from './WatchlistState';
-import { CircularProgress, Typography, CardMedia, Box, Grid } from '@mui/material';
+import { CircularProgress, Typography, CardMedia, Box, Grid, CardActions } from '@mui/material';
 import WatchState from './WatchState';
 import MediaItem from '../types/MediaItem';
 
 export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
+
+    const voteCount = Math.round(mediaItem.voteAverage * 10);
+
+    function getVoteCountColor() {
+        switch (true) {
+            case (voteCount >= 90):
+                return "secondary";
+            case (voteCount >= 80):
+                return "success"
+            case (voteCount >= 70):
+                return "warning";
+            case (voteCount < 70):
+                return "error";
+        }
+    }
 
     return (
         <Card>
             <CardMedia
                 component="img"
                 image={mediaItem.posterUrl} />
-            <CardContent>
-                <Grid container spacing={1} direction="row"
-                    justifyContent="space-between" alignItems="center">
-                    <Grid item xs={3} >
-                        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+            <CardActions >
+                <Grid container spacing={2}
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    style={{ position: 'relative' }}>
+                    <Grid item xs={2} style={{ position: 'absolute', top: "-55px" }} >
+                        <Box sx={{ position: 'relative', display: 'inline-flex', background: 'black', borderRadius: "3rem" }}>
                             <CircularProgress variant="determinate"
-                                value={Math.round(mediaItem.voteAverage * 10)} thickness={7} color={'error'} />
+                                value={voteCount} thickness={7} color={getVoteCountColor()} />
                             <Box sx={{
                                 top: 0,
                                 left: 0,
@@ -28,31 +45,30 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
+                                color: 'white',
                             }}>
                                 <Typography>
-                                    {Math.round(mediaItem.voteAverage * 10)}
+                                    {voteCount}
                                 </Typography>
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid item xs={9} >
-                        <Typography >
+                    <Grid item xs={10} >
+                        <Typography noWrap>
                             {mediaItem.title}
                         </Typography>
-                    </Grid>
-                    <Grid item xs={12} >
-                        <Typography noWrap>
+                        <Typography variant="body2" >
                             {mediaItem.releaseDate.toLocaleDateString()}
                         </Typography>
                     </Grid>
-                    <Grid item >
+                    <Grid item>
                         <WatchState mediaItem={mediaItem} />
                     </Grid>
-                    <Grid item  >
+                    <Grid item >
                         <WatchlistState mediaItem={mediaItem} />
                     </Grid>
                 </Grid>
-            </CardContent>
-        </Card>
+            </CardActions>
+        </Card >
     );
 }

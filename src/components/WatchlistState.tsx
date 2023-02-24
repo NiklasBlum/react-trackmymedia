@@ -1,42 +1,41 @@
-import { Button, IconButton } from "@mui/material";
-import { MoreTime, AlarmOn, MoreTimeOutlined } from '@mui/icons-material';
+import { Button } from "@mui/material";
+import { MoreTime } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from "react";
-import { setWatchlistState } from "../services/FirebaseService";
+import { setWatchlistState } from "../services/firebase/useState";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
-import MediaType from "../types/MediaType";
-
+import { LoadingButton } from "@mui/lab";
 
 export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }): JSX.Element {
 
     const [isWatchlist, setIsWatchlist] = useState(false);
-    const { mediaType }: { mediaType: MediaType } = useMediaStore();
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const { mediaType } = useMediaStore();
 
     async function setWatchlistToState(state: boolean) {
-        console.log(state);
+        setLoading(true);
+        await sleep(200);
         await setWatchlistState(mediaItem, mediaType, state)
         setIsWatchlist(state);
+        setLoading(false);
     }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     useEffect(() => {
         setIsWatchlist(mediaItem.isOnWatchlist);
     }, [])
 
     return (
-        <Fragment>
-            {isWatchlist
-                ?
-                <Button variant="contained"
-                    startIcon={<MoreTime />}
-                    color="success"
-                    onClick={() => setWatchlistToState(false)}>
-                </Button>
-                :
-                <Button variant="outlined"
-                    startIcon={<MoreTime />}
-                    color="success"
-                    onClick={() => setWatchlistToState(true)}>
-                </Button>
-            }
-        </Fragment>
+        <LoadingButton
+            size="small"
+            onClick={() => setWatchlistToState(!isWatchlist)}
+            loading={isLoading}
+            color="success"
+            startIcon={<MoreTime sx={{ padding: "4px" }} />}
+            variant={isWatchlist ? "contained" : "outlined"}
+        />
     )
 }
