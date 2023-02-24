@@ -100,7 +100,7 @@ async function getDbMediaItemById(id: number, mediaType: MediaType) {
             return {
                 onWatchlist: querySnapshot.docs[0].data().onWatchlist,
                 watched: querySnapshot.docs[0].data().watched,
-                watchedAt: querySnapshot.docs[0].data().watchedAt.length > 0
+                watchedAt: querySnapshot.docs[0].data().watchedAt?.length > 0
                     ? querySnapshot.docs[0].data().watchedAt.map(x => x.toDate())
                     : []
             } as DbMediaItem
@@ -110,7 +110,6 @@ async function getDbMediaItemById(id: number, mediaType: MediaType) {
         console.log('Error getting watchlist: ', error);
     }
 }
-
 
 
 export { getDbMediaItemById, setWatchlistState, updateMedia, getWatchlistItems }

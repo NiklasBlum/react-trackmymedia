@@ -16,6 +16,8 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
     function addSpecificDate() {
         onAdd(customWatchDate);
         setCustomWatchDate(null);
+        setShowPopper(false);
+        setAnchorEl(null);
     }
 
     return (

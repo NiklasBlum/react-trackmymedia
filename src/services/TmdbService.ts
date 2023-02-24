@@ -23,8 +23,9 @@ async function getMediaBySearch(searchText: string, mediaType: MediaType, page =
 
 async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] | undefined> {
 
-    let searchQuery = `${baseUrl}${mediaType}/popular?api_key=${apiKey}&language=${language}&page=${page}`;
+    let searchQuery = `${baseUrl}${mediaType}/popular?api_key=${apiKey}&language=${language}&page=${page}&original_language=en`;
 
+    console.log(searchQuery);
     let response = await axios.get(searchQuery);
 
     try {
@@ -64,7 +65,7 @@ async function getDbMediaItems(tmdbMediaResults: any[], mediaType: MediaType): P
 
 async function createDbMediaItem(tmdbMediaItem: any, mediaType: MediaType): Promise<MediaItem | null> {
 
-    if (tmdbMediaItem.poster_path) {
+    if (tmdbMediaItem.poster_path && tmdbMediaItem.original_language === "en") {
         const dbMediaItem = await getDbMediaItemById(tmdbMediaItem.id, mediaType);
         return {
             id: tmdbMediaItem.id,
