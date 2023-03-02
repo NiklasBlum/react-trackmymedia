@@ -37,6 +37,22 @@ async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] |
     }
 }
 
+async function getTrending(mediaType: MediaType): Promise<MediaItem[] | undefined> {
+
+    let searchQuery = `${baseUrl}trending/${mediaType}/week?api_key=${apiKey}`;
+
+    console.log(searchQuery);
+    let response = await axios.get(searchQuery);
+
+    try {
+        if (response.data) {
+            return await getDbMediaItems(response.data.results, mediaType);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function getMediaById(id: number, mediaType: MediaType): Promise<MediaItem> {
     let query = `${baseUrl}${mediaType}/${id}?api_key=${apiKey}&language=${language}`;
 
@@ -81,4 +97,4 @@ async function createDbMediaItem(tmdbMediaItem: any, mediaType: MediaType): Prom
 }
 
 
-export { getMediaBySearch, getPopular, getMediaById }
+export { getMediaBySearch, getPopular, getMediaById, getTrending}

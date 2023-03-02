@@ -4,7 +4,9 @@ import Home from '../../views/Home';
 import Popular from '../../views/Popular';
 import Watched from '../../views/Watched';
 import Watchlist from '../../views/Watchlist';
+import Trending from '../../views/Trending';
 import ProtectedRoute from "../../utils/ProtectedRoute"
+
 export default function Routes() {
     return (
         <ReactRoutes>
@@ -13,6 +15,7 @@ export default function Routes() {
             <Route path="/watched" element={<ProtectedRoute><Watched /></ProtectedRoute>} />
             <Route path="/popular" element={<ProtectedRoute><Popular /></ProtectedRoute>} />
             <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
+            <Route path="/trending" element={<ProtectedRoute><Trending /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         </ReactRoutes>
     )

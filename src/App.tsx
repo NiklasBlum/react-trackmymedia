@@ -1,18 +1,14 @@
-
-
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from "./firebase/config";
 import { useEffect } from "react";
 import { useMediaStore } from "./store";
-
 import { LinearProgress, Grid } from "@mui/material";
-import NavigationBar from "./components/NavigationBar";
+import NavigationBar from "./components/nav/NavigationBar";
 import Routes from './components/nav/Routes';
 import MediaFilter from "./components/MediaFilter";
 
 import { toast, ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 export default function App() {
     const { setUser, isLoading } = useMediaStore();

@@ -4,14 +4,14 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { logout } from '../services/firebase/useAuth';
-import { useMediaStore } from '../store';
+import { logout } from '../../services/firebase/useAuth';
+import { useMediaStore } from '../../store';
 import { Avatar, Box, Container, Menu, MenuItem, Tooltip } from '@mui/material';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Popular', 'Watchlist', 'Watched'];
+const pages = ['Trending', 'Popular', 'Watchlist', 'Watched'];
 
 export default function ButtonAppBar() {
 

@@ -1,23 +1,24 @@
 import { Fragment, useEffect, useState } from 'react';
-import { getPopular } from "../services/tmdb/useTmdb";
+import { getTrending } from "../services/tmdb/useTmdb";
 import { useMediaStore } from '../store';
 import { Grid } from '@mui/material';
 import MediaCardGrid from '../components/MediaCardGrid';
+import NoResults from '../components/shared/NoResults';
 
 export default function Popular() {
     const { mediaType, setLoading } = useMediaStore();
     const [mediaItems, setMediaItems] = useState(null);
 
-    async function searchPopular() {
+    async function searchTrending() {
         setLoading(true);
         setMediaItems(null);
-        setMediaItems(await getPopular(mediaType, 1));
+        setMediaItems(await getTrending(mediaType));
         setLoading(false);
         console.log(mediaItems);
     }
 
     useEffect(() => {
-        searchPopular();
+        searchTrending();
     }, [mediaType])
 
     return (
@@ -30,7 +31,7 @@ export default function Popular() {
                     </Grid>
                 }
 
-                {mediaItems?.length == 0 && "No results"}
+                {mediaItems?.length == 0 && <NoResults />}
             </Grid>
         </Fragment >
     )
