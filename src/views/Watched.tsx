@@ -5,6 +5,7 @@ import MediaCardGrid from '../components/MediaCardGrid';
 import { getWatchedMediaItems } from '../services/firebase/useState';
 import { getMediaById } from '../services/tmdb/useTmdb';
 import MediaItem from '../types/MediaItem';
+import NoResults from '../components/shared/NoResults';
 
 export default function Watched() {
     const { mediaType, setLoading } = useMediaStore();
@@ -43,7 +44,7 @@ export default function Watched() {
                         <MediaCardGrid mediaItems={mediaItems} />
                     </Grid>
                 }
-                {mediaItems?.length == 0 && "No results"}
+                {mediaItems?.length == 0 && <NoResults/>}
             </Grid>
         </Fragment >
     )

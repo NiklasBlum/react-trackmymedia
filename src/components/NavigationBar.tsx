@@ -28,6 +28,11 @@ export default function ButtonAppBar() {
         setAnchorElUser(event.currentTarget);
     }
 
+    function navigateToPage(page) {
+        navigate('/' + page);
+        handleCloseNavMenu();
+    }
+
     function handleCloseNavMenu() {
         console.log("close");
         setAnchorElNav(null);
@@ -90,7 +95,7 @@ export default function ButtonAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={() => navigate('/' + page)}  >
+                                <MenuItem key={page} onClick={() => navigateToPage(page)}  >
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}

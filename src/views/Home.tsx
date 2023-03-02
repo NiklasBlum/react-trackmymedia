@@ -1,9 +1,10 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import MediaSearchBar from '../components/MediaSearchBar';
 import { getMediaBySearch } from "../services/tmdb/useTmdb";
 import { useMediaStore } from '../store';
 import { Button, Grid } from '@mui/material';
 import MediaCardGrid from '../components/MediaCardGrid';
+import NoResults from '../components/shared/NoResults';
 
 export default function Home() {
     const { mediaType, searchText, setLoading, isLoading } = useMediaStore();
@@ -15,6 +16,10 @@ export default function Home() {
         setMediaItems(await getMediaBySearch(searchText, mediaType, 1));
         setLoading(false);
     }
+
+    useEffect(() => {
+        ExecuteSearch();
+    }, [mediaType])
 
     return (
         <Fragment>
@@ -38,7 +43,7 @@ export default function Home() {
                         <MediaCardGrid mediaItems={mediaItems} />
                     </Grid>
                 }
-                {mediaItems?.length == 0 && "No results"}
+                {mediaItems?.length == 0 && <NoResults />}
             </Grid>
         </Fragment >
     )

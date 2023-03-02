@@ -5,6 +5,7 @@ import { setWatchlistState } from "../services/firebase/useState";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
 import { LoadingButton } from "@mui/lab";
+import { toast } from "react-toastify";
 
 export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }): JSX.Element {
 
@@ -18,6 +19,8 @@ export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }):
         await setWatchlistState(mediaItem, mediaType, state)
         setIsWatchlist(state);
         setLoading(false);
+
+        toast.success(state ? `${mediaItem.title} Added To Watchlist` : `${mediaItem.title} Removed From Watchlist`);
     }
 
     function sleep(ms) {

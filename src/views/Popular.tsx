@@ -3,6 +3,7 @@ import { getPopular } from "../services/tmdb/useTmdb";
 import { useMediaStore } from '../store';
 import { Grid } from '@mui/material';
 import MediaCardGrid from '../components/MediaCardGrid';
+import NoResults from '../components/shared/NoResults';
 
 export default function Popular() {
     const { mediaType, setLoading } = useMediaStore();
@@ -29,7 +30,7 @@ export default function Popular() {
                     </Grid>
                 }
 
-                {mediaItems?.length == 0 && "No results"}
+                {mediaItems?.length == 0 && <NoResults />}
             </Grid>
         </Fragment >
     )

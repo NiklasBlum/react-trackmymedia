@@ -1,70 +1,69 @@
-import { Route, Routes } from "react-router-dom"
-import Home from "./views/Home"
-import Auth from './views/Auth';
+
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from "./firebase/config";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useMediaStore } from "./store";
-import Popular from "./views/Popular";
-import Watchlist from "./views/Watchlist";
-import { CircularProgress, Grid } from "@mui/material";
+
+import { LinearProgress, Grid } from "@mui/material";
 import NavigationBar from "./components/NavigationBar";
-import Watched from "./views/Watched";
+import Routes from './components/nav/Routes';
 import MediaFilter from "./components/MediaFilter";
 
+import { toast, ToastContainer, Flip } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 export default function App() {
-    //https://github.com/csfrequency/react-firebase-hooks/tree/09bf06b28c82b4c3c1beabb1b32a8007232ed045/auth#useauthstate
-    //TODO can options be used to replace useEffect?
+    const { setUser, isLoading } = useMediaStore();
     const [user, loading, error] = useAuthState(auth);
-    const navigate = useNavigate();
-    const { user: storeUser, setUser, isLoading } = useMediaStore();
 
     useEffect(() => {
         if (loading)
             return;
-        if (user) {
-            setUser(user);
-            navigate("/");
+        if (error) {
+            toast.error(error.message);
         }
-        else {
-            console.log("user logged out")
-            navigate("/auth");
-        }
+        setUser(user ? user : null);
     }, [user, loading]);
 
     return (
-
-        //Refactor this and use protected routes
         <>
+            {loading || isLoading &&
+                <LinearProgress sx={{
+                    top: "50%",
+                    left: "50%",
+                    width: "20em",
+                    transform: "translate(-50%, -50%)",
+                    position: "fixed"
+                }} />
+            }
+
             {user &&
                 <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={12}>
                         <NavigationBar />
                     </Grid>
-                    <Grid item xs={12} textAlign="center" marginBottom={3}>
+                    <Grid item textAlign="center" marginBottom={3} sx={{ pl: 0 }}>
                         <MediaFilter isDisabled={isLoading} />
                     </Grid>
-                </Grid>
-            }
+                </Grid>}
 
-            {isLoading && <CircularProgress sx={{
-                top: "50 %",
-                left: "50%",
-                width: "30em",
-                height: "18em",
-                transform: "translate(-50%, -50%)",
-                position: "fixed"
-            }} />}
+            {!loading && <Routes />}
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/watched" element={<Watched />} />
-                <Route path="/popular" element={<Popular />} />
-                <Route path="/watchlist" element={<Watchlist />} />
-                <Route path="*" element={<Home />} />
-            </Routes>
+            <ToastContainer
+                transition={Flip}
+                position="bottom-right"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </>
     )
 }

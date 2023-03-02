@@ -4,6 +4,7 @@ import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
 import MediaType from "../types/MediaType";
 import WatchStateSplitButton from "./WatchStateSplitButton";
+import { toast } from 'react-toastify';
 
 export default function WatchState({ mediaItem }: { mediaItem: MediaItem }): JSX.Element {
 
@@ -12,15 +13,23 @@ export default function WatchState({ mediaItem }: { mediaItem: MediaItem }): JSX
     const { mediaType }: { mediaType: MediaType } = useMediaStore();
 
     async function addWatchDate(date: Date) {
-        if (isDateAlreadyAdded(date))
-            return;
+        try {
+            if (isDateAlreadyAdded(date)) {
+                toast.error("Date Already added!");
+                return;
+            }
 
-        setLoading(true);
-        const allWatchDates = [...watchDates, date];
+            setLoading(true);
+            const allWatchDates = [...watchDates, date];
 
-        await setStateInDb(mediaItem, mediaType, allWatchDates);
-        setWatchDates(allWatchDates);
-        setLoading(false);
+            await setStateInDb(mediaItem, mediaType, allWatchDates);
+            setWatchDates(allWatchDates);
+            setLoading(false);
+            toast.success("Watched " + mediaItem.title + " at " + date.toLocaleDateString());
+
+        } catch (error) {
+            toast.error(error);
+        }
     }
 
     function isDateAlreadyAdded(date: Date): boolean {
@@ -28,11 +37,16 @@ export default function WatchState({ mediaItem }: { mediaItem: MediaItem }): JSX
     }
 
     async function removeWatchDate(date: Date) {
-        setLoading(true);
-        var newWatchDates = watchDates.filter(x => x !== date)
-        await setStateInDb(mediaItem, mediaType, newWatchDates);
-        setWatchDates(newWatchDates);
-        setLoading(false);
+        try {
+            setLoading(true);
+            var newWatchDates = watchDates.filter(x => x !== date)
+            await setStateInDb(mediaItem, mediaType, newWatchDates);
+            setWatchDates(newWatchDates);
+            setLoading(false);
+            toast.success("Watch date " + date.toLocaleDateString() + " removed");
+        } catch (error) {
+            toast.error(error);
+        }
     }
 
     useEffect(() => {
