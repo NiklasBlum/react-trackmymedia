@@ -15,7 +15,6 @@ export default function Watched() {
         const mediaItems = [] as MediaItem[];
         const dbMediaItems = await getWatchedMediaItems(mediaType);
 
-        console.log(dbMediaItems);
         for await (const mediaItem of dbMediaItems) {
             mediaItems.push(await getMediaById(mediaItem.tmdbId, mediaType));
         }
@@ -44,7 +43,7 @@ export default function Watched() {
                         <MediaCardGrid mediaItems={mediaItems} />
                     </Grid>
                 }
-                {mediaItems?.length == 0 && <NoResults/>}
+                {mediaItems?.length == 0 && <NoResults />}
             </Grid>
         </Fragment >
     )

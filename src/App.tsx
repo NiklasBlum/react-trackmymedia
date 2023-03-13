@@ -40,7 +40,7 @@ export default function App() {
                     <Grid item xs={12}>
                         <NavigationBar />
                     </Grid>
-                    <Grid item textAlign="center" marginBottom={3} sx={{ pl: 0 }}>
+                    <Grid item textAlign="center" marginTop={9} marginBottom={3} >
                         <MediaFilter isDisabled={isLoading} />
                     </Grid>
                 </Grid>}
@@ -50,7 +50,7 @@ export default function App() {
             <ToastContainer
                 transition={Flip}
                 position="bottom-right"
-                autoClose={4000}
+                autoClose={3500}
                 hideProgressBar={false}
                 newestOnTop
                 closeOnClick

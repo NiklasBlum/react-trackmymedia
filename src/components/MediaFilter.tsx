@@ -4,11 +4,12 @@ import { useMediaStore } from '../store';
 
 export default function MediaFilter({ isDisabled = false }) {
 
-    const { mediaType, setMediaType } = useMediaStore();
+    const { mediaType, setMediaType, setCurrentPage } = useMediaStore();
 
     function handleChange(_event: React.MouseEvent<HTMLElement>, newMediaType: MediaType) {
         if (newMediaType) {
             setMediaType(newMediaType);
+            setCurrentPage(1);
         }
     }
 
@@ -21,7 +22,7 @@ export default function MediaFilter({ isDisabled = false }) {
             disabled={isDisabled}
             onChange={handleChange}
         >
-            <ToggleButton value={MediaType.Movie} >Movie</ToggleButton>
+            <ToggleButton value={MediaType.Movie}>Movie</ToggleButton>
             <ToggleButton value={MediaType.Show}>Show</ToggleButton>
         </ToggleButtonGroup>
     );

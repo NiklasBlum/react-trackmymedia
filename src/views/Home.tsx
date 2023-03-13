@@ -7,7 +7,7 @@ import MediaCardGrid from '../components/MediaCardGrid';
 import NoResults from '../components/shared/NoResults';
 
 export default function Home() {
-    const { mediaType, searchText, setLoading, isLoading } = useMediaStore();
+    const { mediaType, searchText, currentPage, setLoading, isLoading } = useMediaStore();
     const [mediaItems, setMediaItems] = useState(null);
 
     async function ExecuteSearch() {
@@ -19,7 +19,7 @@ export default function Home() {
 
     useEffect(() => {
         ExecuteSearch();
-    }, [mediaType])
+    }, [mediaType, currentPage])
 
     return (
         <Fragment>

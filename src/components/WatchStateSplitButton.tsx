@@ -1,6 +1,6 @@
 import { RemoveRedEye, CalendarMonth, Delete } from "@mui/icons-material"
 import { Badge, Button, ButtonGroup, IconButton, List, ListItem, ListItemText, Paper, Popper } from "@mui/material"
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import DateTimePicker from "./shared/DateTimePicker";
 
 export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isLoading }) {
@@ -23,22 +23,23 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
     }
 
     return (
-        <Fragment>
-            <ButtonGroup variant="contained" size="small" disabled={isLoading}>
+        <>
+            <ButtonGroup variant="contained"
+                color="inherit"
+                size="small"
+                disabled={isLoading}>
                 <Button startIcon={<RemoveRedEye />}
-                    color={watchedAtleastOnce ? "success" : "info"}
+                    sx={{ border: 0 }}
+                    color={watchedAtleastOnce ? "secondary" : "info"}
                     onClick={() => onAdd(new Date())}>
                     {
                         watchedAtleastOnce
-                            ?
-                            watchDates[0].toLocaleDateString()
-                            :
-                            'Add'
+                            ? watchDates[0].toLocaleDateString()
+                            : 'Add'
                     }
                 </Button>
-
                 <IconButton onClick={handleShowPopper} color="info" size="small">
-                    <Badge badgeContent={watchDates.length} color="success">
+                    <Badge badgeContent={watchDates.length} color="secondary">
                         <CalendarMonth />
                     </Badge>
                 </IconButton>
@@ -68,11 +69,14 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
 
                     <DateTimePicker date={customWatchDate} dateChanged={(x: Date) => setCustomWatchDate(x)} />
 
-                    <Button size="small" disabled={customWatchDate == null}
-                        onClick={addSpecificDate}>Add specific date</Button>
+                    <Button size="small"
+                        disabled={customWatchDate == null}
+                        onClick={addSpecificDate}>
+                        Add specific date
+                    </Button>
                 </Paper>
             </Popper>
-        </Fragment>
+        </ >
     )
 }
 

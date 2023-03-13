@@ -29,14 +29,14 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
                 image={mediaItem.posterUrl} />
             <CardActions>
                 <Grid container
-                    spacing={2}
+                    spacing={1}
                     direction="row"
                     justifyContent="space-between"
                     alignItems="center"
                     style={{ position: 'relative' }}>
-                    <Grid item xs={2} style={{ position: 'absolute', top: "-55px" }} >
-                        <Box sx={{ position: 'relative', display: 'inline-flex', background: 'black', borderRadius: "3rem" }}>
-                            <CircularProgress variant="determinate"
+                    <Grid item xs={2} style={{ position: 'absolute', top: "-50px", opacity: "80%" }} >
+                        <Box sx={{ position: 'relative', display: 'inline-flex', background: 'black', borderRadius: "2rem" }}>
+                            <CircularProgress variant="determinate" size="2rem"
                                 value={voteCount} thickness={7} color={getVoteCountColor()} />
                             <Box sx={{
                                 top: 0,
@@ -49,22 +49,19 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
                                 justifyContent: 'center',
                                 color: 'white',
                             }}>
-                                <Typography>
+                                <Typography variant="body2">
                                     {voteCount}
                                 </Typography>
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid item xs={10}  >
-                        <Typography noWrap>
-                            {mediaItem.title}
-                        </Typography>
+                    <Grid item xs={10}>
                         <Typography variant="body2" >
                             {isNaN(mediaItem.releaseDate.valueOf()) ? "TBA" : mediaItem.releaseDate.toLocaleDateString()}
                         </Typography>
                     </Grid>
                     {mediaItem.onWatchlist &&
-                        <Grid item xs={2}  style={{textAlign: "end"}}>
+                        <Grid item xs={2} style={{ textAlign: "end" }}>
                             <WatchlistWaitingState mediaItem={mediaItem} />
                         </Grid>
                     }

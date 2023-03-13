@@ -34,7 +34,6 @@ export default function ButtonAppBar() {
     }
 
     function handleCloseNavMenu() {
-        console.log("close");
         setAnchorElNav(null);
     }
 
@@ -43,12 +42,12 @@ export default function ButtonAppBar() {
     }
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed" >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <LiveTvIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
-                        variant="h6"
+                        variant="h5"
                         noWrap
                         component="a"
                         href="/"
@@ -68,16 +67,12 @@ export default function ButtonAppBar() {
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
                             <MenuIcon />
                         </IconButton>
                         <Menu
-                            id="menu-appbar"
                             anchorEl={anchorElNav}
                             anchorOrigin={{
                                 vertical: 'bottom',
@@ -140,7 +135,6 @@ export default function ButtonAppBar() {
                         </Tooltip>
                         <Menu
                             sx={{ mt: '45px' }}
-                            id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
                                 vertical: 'top',

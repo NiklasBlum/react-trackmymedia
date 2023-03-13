@@ -25,7 +25,6 @@ async function getPopular(mediaType: MediaType, page = 1): Promise<MediaItem[] |
 
     let searchQuery = `${baseUrl}${mediaType}/popular?api_key=${apiKey}&language=${language}&page=${page}&region=DE`;
 
-    console.log(searchQuery);
     let response = await axios.get(searchQuery);
 
     try {
@@ -41,7 +40,6 @@ async function getTrending(mediaType: MediaType): Promise<MediaItem[] | undefine
 
     let searchQuery = `${baseUrl}trending/${mediaType}/week?api_key=${apiKey}`;
 
-    console.log(searchQuery);
     let response = await axios.get(searchQuery);
 
     try {
@@ -69,10 +67,9 @@ async function getMediaById(id: number, mediaType: MediaType): Promise<MediaItem
 
 async function getDbMediaItems(tmdbMediaResults: any[], mediaType: MediaType): Promise<MediaItem[]> {
     var mediaItems: MediaItem[] = [];
-    console.log(tmdbMediaResults);
+
     for await (const x of tmdbMediaResults) {
         if (x.poster_path) {
-
             mediaItems.push(await createDbMediaItem(x, mediaType));
         }
     }

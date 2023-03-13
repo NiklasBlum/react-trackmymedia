@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaStore } from '../store';
 import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
 import MediaCardGrid from '../components/MediaCardGrid';
@@ -21,7 +21,7 @@ export default function Watchlist() {
             const completeItem = { ...tmdbMediaItem, onWaitlist: mediaItem.onWaitlist } as MediaItem
             mediaItems.push(completeItem);
         }
-        console.log(mediaItems);
+
         return mediaItems;
     }
 
@@ -33,7 +33,7 @@ export default function Watchlist() {
     }
 
     function getItemsOnWaitlist(state: boolean): MediaItem[] {
-        return mediaItems.filter(x => x.onWaitlist == state);
+        return mediaItems?.filter(x => x.onWaitlist == state);
     }
 
     useEffect(() => {
@@ -41,34 +41,29 @@ export default function Watchlist() {
     }, [mediaType])
 
     return (
-        <Fragment>
-            <Grid container spacing={2} justifyContent="center">
-                {
-                    mediaItems != null &&
-                    <Grid item xs={12}>
-                        <MediaCardGrid mediaItems={getItemsOnWaitlist(false)} />
-                    </Grid>
-                }
-                {
-                    mediaItems != null && getItemsOnWaitlist(true).length > 0 &&
+        <>
+            <MediaCardGrid mediaItems={getItemsOnWaitlist(false)}
+                showPager={false} />
+            {
+                getItemsOnWaitlist(true)?.length > 0 &&
+                <Grid container justifyContent="center">
                     <Grid item xs={11}>
-                        <Accordion >
-                            <AccordionSummary expandIcon={<ExpandMore />} sx={{
-                                backgroundColor: "lightgray"
-                            }}                        >
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMore />}
+                                sx={{ backgroundColor: "lightgray" }}                        >
                                 <Typography variant="h5">Waitlist</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Grid item xs={12}>
-                                    <MediaCardGrid mediaItems={getItemsOnWaitlist(true)} />
-                                </Grid>
+                                <MediaCardGrid mediaItems={getItemsOnWaitlist(true)}
+                                    showPager={false} />
                             </AccordionDetails>
                         </Accordion>
                     </Grid>
-                }
+                </Grid>
+            }
 
-                {mediaItems?.length == 0 && <NoResults />}
-            </Grid>
-        </Fragment >
+            {mediaItems?.length == 0 && <NoResults />}
+
+        </>
     )
 }
