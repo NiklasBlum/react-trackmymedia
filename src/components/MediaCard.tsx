@@ -3,6 +3,7 @@ import WatchlistState from './WatchlistState';
 import { CircularProgress, Typography, CardMedia, Box, Grid, CardActions } from '@mui/material';
 import WatchState from './WatchState';
 import MediaItem from '../types/MediaItem';
+import WatchlistWaitingState from './WaitlistState';
 
 export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
 
@@ -26,8 +27,9 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
             <CardMedia
                 component="img"
                 image={mediaItem.posterUrl} />
-            <CardActions >
-                <Grid container spacing={2}
+            <CardActions>
+                <Grid container
+                    spacing={2}
                     direction="row"
                     justifyContent="space-between"
                     alignItems="center"
@@ -53,20 +55,27 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid item xs={10} >
+                    <Grid item xs={10}  >
                         <Typography noWrap>
                             {mediaItem.title}
                         </Typography>
                         <Typography variant="body2" >
-                            {mediaItem.releaseDate.toLocaleDateString()}
+                            {isNaN(mediaItem.releaseDate.valueOf()) ? "TBA" : mediaItem.releaseDate.toLocaleDateString()}
                         </Typography>
                     </Grid>
-                    <Grid item>
+                    {mediaItem.onWatchlist &&
+                        <Grid item xs={2}  style={{textAlign: "end"}}>
+                            <WatchlistWaitingState mediaItem={mediaItem} />
+                        </Grid>
+                    }
+                    <Grid item >
                         <WatchState mediaItem={mediaItem} />
                     </Grid>
                     <Grid item >
                         <WatchlistState mediaItem={mediaItem} />
                     </Grid>
+
+
                 </Grid>
             </CardActions>
         </Card >

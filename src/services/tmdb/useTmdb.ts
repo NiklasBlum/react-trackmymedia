@@ -69,7 +69,7 @@ async function getMediaById(id: number, mediaType: MediaType): Promise<MediaItem
 
 async function getDbMediaItems(tmdbMediaResults: any[], mediaType: MediaType): Promise<MediaItem[]> {
     var mediaItems: MediaItem[] = [];
-
+    console.log(tmdbMediaResults);
     for await (const x of tmdbMediaResults) {
         if (x.poster_path) {
 
@@ -91,10 +91,10 @@ async function createDbMediaItem(tmdbMediaItem: any, mediaType: MediaType): Prom
         voteAverage: tmdbMediaItem.vote_average,
         voteCount: tmdbMediaItem.vote_count,
         releaseDate: mediaType === MediaType.Movie ? new Date(tmdbMediaItem.release_date) : new Date(tmdbMediaItem.first_air_date),
-        isOnWatchlist: dbMediaItem.onWatchlist,
+        onWatchlist: dbMediaItem.onWatchlist,
         watchedAt: dbMediaItem.watchedAt
     } as MediaItem;
 }
 
 
-export { getMediaBySearch, getPopular, getMediaById, getTrending}
+export { getMediaBySearch, getPopular, getMediaById, getTrending }

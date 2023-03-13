@@ -75,6 +75,35 @@ async function setWatchlistState(mediaItem: MediaItem, mediaType: MediaType, onW
     }
 }
 
+async function setWaitlistState(mediaItem: MediaItem, mediaType: MediaType, onWaitlist: boolean) {
+
+    const { user }: { user: any } = useMediaStore.getState();
+
+    const q = query(collection(db, "media"),
+        where("tmdbId", "==", mediaItem.id),
+        where("userId", "==", user.uid),
+        where("mediaType", "==", mediaType));
+
+    try {
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+            return
+        }
+        else {
+            const id = querySnapshot.docs[0].id;
+            const docRef = doc(db, 'media', id);
+
+            updateDoc(docRef, {
+                onWaitlist: onWaitlist
+            })
+        }
+    } catch (error) {
+        console.log('Error setting watchlist waiting State: ', error);
+    }
+}
+
+
 async function getWatchlistItems(mediaType: MediaType): Promise<DbMediaItem[]> {
 
     const q = query(collection(db, "media"),
@@ -87,7 +116,8 @@ async function getWatchlistItems(mediaType: MediaType): Promise<DbMediaItem[]> {
     querySnapshot.forEach((doc) => {
         dbMediaItems.push(
             {
-                tmdbId: doc.data().tmdbId
+                tmdbId: doc.data().tmdbId,
+                onWaitlist: doc.data().onWaitlist ?? false
             } as DbMediaItem)
     });
 
@@ -115,4 +145,4 @@ async function getWatchedMediaItems(mediaType: MediaType): Promise<DbMediaItem[]
 }
 
 
-export { getWatchlistItems, setWatchState, setWatchlistState, getWatchedMediaItems }
+export { getWatchlistItems, setWatchState, setWatchlistState, getWatchedMediaItems, setWaitlistState }
