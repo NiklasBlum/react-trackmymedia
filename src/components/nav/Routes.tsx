@@ -8,7 +8,9 @@ import Trending from '../../views/Trending';
 import ProtectedRoute from "../../utils/ProtectedRoute"
 
 export default function Routes() {
+    
     return (
+
         <ReactRoutes>
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/auth" element={<Auth />} />
