@@ -1,3 +1,4 @@
+import MediaType from "./MediaType";
 
 export default interface MediaItem {
     id: number,
@@ -8,5 +9,6 @@ export default interface MediaItem {
     releaseDate: Date,
     onWatchlist: boolean,
     watchedAt?: Date[],
-    onWaitlist: boolean
+    onWaitlist: boolean,
+    mediaType: MediaType
 }

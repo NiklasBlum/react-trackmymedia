@@ -1,12 +1,14 @@
 import Card from '@mui/material/Card';
 import WatchlistState from './WatchlistState';
-import { CircularProgress, Typography, CardMedia, Box, Grid, CardActions } from '@mui/material';
+import { CircularProgress, Typography, CardMedia, Box, Grid, CardActions, CardActionArea } from '@mui/material';
 import WatchState from './WatchState';
 import MediaItem from '../types/MediaItem';
 import WatchlistWaitingState from './WaitlistState';
+import { useNavigate } from 'react-router-dom';
 
 export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
 
+    const navigate = useNavigate();
     const voteCount = Math.round(mediaItem.voteAverage * 10);
 
     function getVoteCountColor() {
@@ -24,9 +26,11 @@ export default function MediaCard({ mediaItem }: { mediaItem: MediaItem }) {
 
     return (
         <Card>
-            <CardMedia
-                component="img"
-                image={mediaItem.posterUrl} />
+            <CardActionArea onClick={() => navigate(`/details/${mediaItem.mediaType.toString()}/${mediaItem.id}`)}>
+                <CardMedia
+                    component="img"
+                    image={mediaItem.posterUrl} />
+            </CardActionArea>
             <CardActions>
                 <Grid container
                     spacing={1}

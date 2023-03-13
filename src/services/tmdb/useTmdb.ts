@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useMediaStore } from "../../store";
+import MediaDetailsInfo from "../../types/MediaDetailsInfo";
 import MediaItem from "../../types/MediaItem";
 import MediaType from "../../types/MediaType";
 import { getDbMediaItemById } from "../firebase/useMedia";
@@ -51,6 +52,35 @@ async function getTrending(mediaType: MediaType): Promise<MediaItem[] | undefine
     }
 }
 
+
+async function getMediaDetails(mediaId: string, mediaType: string): Promise<MediaDetailsInfo> {
+
+    let searchQuery = `${baseUrl}${mediaType}/${mediaId}?api_key=${apiKey}&language=de-DE&append_to_response=reviews,videos,seasons`;
+    console.log(searchQuery);
+    let response = await axios.get(searchQuery);
+
+    try {
+        if (response.data) {
+
+            return createMediaDetails(response.data, mediaType);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function createMediaDetails(tmdbMediaResult: any, mediaType: string) {
+    console.log(tmdbMediaResult);
+    return {
+        mediaType: mediaType === MediaType.Movie ? MediaType.Movie : MediaType.Show,
+        title: mediaType === MediaType.Movie ? tmdbMediaResult.title : tmdbMediaResult.name,
+        overview: tmdbMediaResult.overview,
+        posterUrl: basePosterUrl + tmdbMediaResult.backdrop_path,
+        reviews: tmdbMediaResult.reviews,
+        runtime: tmdbMediaResult.runtime,
+    } as MediaDetailsInfo;
+}
+
 async function getMediaById(id: number, mediaType: MediaType): Promise<MediaItem> {
     let query = `${baseUrl}${mediaType}/${id}?api_key=${apiKey}&language=${language}`;
 
@@ -89,9 +119,10 @@ async function createDbMediaItem(tmdbMediaItem: any, mediaType: MediaType): Prom
         voteCount: tmdbMediaItem.vote_count,
         releaseDate: mediaType === MediaType.Movie ? new Date(tmdbMediaItem.release_date) : new Date(tmdbMediaItem.first_air_date),
         onWatchlist: dbMediaItem.onWatchlist,
-        watchedAt: dbMediaItem.watchedAt
+        watchedAt: dbMediaItem.watchedAt,
+        mediaType: mediaType === MediaType.Movie ? MediaType.Movie : MediaType.Show
     } as MediaItem;
 }
 
 
-export { getMediaBySearch, getPopular, getMediaById, getTrending }
+export { getMediaBySearch, getPopular, getMediaById, getTrending, getMediaDetails }

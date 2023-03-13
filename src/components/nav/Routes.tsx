@@ -8,6 +8,7 @@ import Trending from '../../views/Trending';
 import ProtectedRoute from "../../utils/ProtectedRoute"
 import { useEffect } from 'react';
 import { useMediaStore } from '../../store';
+import MediaDetails from '../../views/MediaDetails';
 
 export default function Routes() {
     const { setCurrentPage } = useMediaStore();
@@ -26,6 +27,7 @@ export default function Routes() {
             <Route path="/popular" element={<ProtectedRoute><Popular /></ProtectedRoute>} />
             <Route path="/watchlist" element={<ProtectedRoute><Watchlist /></ProtectedRoute>} />
             <Route path="/trending" element={<ProtectedRoute><Trending /></ProtectedRoute>} />
+            <Route path="/details/:mediaType/:mediaId" element={<ProtectedRoute><MediaDetails /></ProtectedRoute>} />
             <Route path="*" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         </ReactRoutes>
     )
