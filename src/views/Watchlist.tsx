@@ -61,9 +61,6 @@ export default function Watchlist() {
                     </Grid>
                 </Grid>
             }
-
-            {mediaItems?.length == 0 && <NoResults />}
-
         </>
     )
 }

@@ -76,7 +76,7 @@ export default function WatchStateSplitButton({ watchDates, onAdd, onRemove, isL
                     </Button>
                 </Paper>
             </Popper>
-        </ >
+        </>
     )
 }
 

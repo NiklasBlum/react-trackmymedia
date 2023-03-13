@@ -20,8 +20,7 @@ export default function MediaFilter({ isDisabled = false }) {
             value={mediaType}
             exclusive
             disabled={isDisabled}
-            onChange={handleChange}
-        >
+            onChange={handleChange}>
             <ToggleButton value={MediaType.Movie}>Movie</ToggleButton>
             <ToggleButton value={MediaType.Show}>Show</ToggleButton>
         </ToggleButtonGroup>

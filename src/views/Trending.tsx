@@ -15,11 +15,6 @@ export default function Popular() {
     }
 
     useEffect(() => {
-        setCurrentPage(1);
-    }, [])
-
-    useEffect(() => {
-
         searchTrending();
     }, [mediaType, currentPage])
 

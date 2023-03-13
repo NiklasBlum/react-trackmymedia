@@ -8,7 +8,6 @@ export default function Popular() {
     const { mediaType, currentPage, setLoading } = useMediaStore();
     const [mediaItems, setMediaItems] = useState<MediaItem[]>(null);
 
-
     async function searchPopular() {
         setLoading(true);
         setMediaItems(null);

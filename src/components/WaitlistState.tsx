@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { setWaitlistState } from "../services/firebase/useState";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
-import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import useSound from "use-sound";
 import { IconButton } from '@mui/material';
@@ -33,7 +32,7 @@ export default function WatchlistWaitingState({ mediaItem }: { mediaItem: MediaI
         }
     }
 
-    function sleep(ms) {
+    function sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 

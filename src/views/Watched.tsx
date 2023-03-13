@@ -1,11 +1,9 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaStore } from '../store';
-import { Grid } from '@mui/material';
 import MediaCardGrid from '../components/MediaCardGrid';
 import { getWatchedMediaItems } from '../services/firebase/useState';
 import { getMediaById } from '../services/tmdb/useTmdb';
 import MediaItem from '../types/MediaItem';
-import NoResults from '../components/shared/NoResults';
 
 export default function Watched() {
     const { mediaType, setLoading } = useMediaStore();
@@ -35,16 +33,6 @@ export default function Watched() {
     }, [mediaType])
 
     return (
-        <Fragment>
-            <Grid container spacing={2} justifyContent="center">
-                {
-                    mediaItems != null &&
-                    <Grid item xs={12}>
-                        <MediaCardGrid mediaItems={mediaItems} />
-                    </Grid>
-                }
-                {mediaItems?.length == 0 && <NoResults />}
-            </Grid>
-        </Fragment >
+        <MediaCardGrid mediaItems={mediaItems} showPager={false} />
     )
 }

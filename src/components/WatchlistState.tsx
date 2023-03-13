@@ -1,10 +1,9 @@
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { MoreTime } from '@mui/icons-material';
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { setWatchlistState } from "../services/firebase/useState";
 import { useMediaStore } from "../store";
 import MediaItem from "../types/MediaItem";
-import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import useSound from "use-sound";
 
@@ -35,7 +34,7 @@ export default function WatchlistState({ mediaItem }: { mediaItem: MediaItem }):
         }
     }
 
-    function sleep(ms) {
+    function sleep(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
